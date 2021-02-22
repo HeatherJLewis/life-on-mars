@@ -1,5 +1,5 @@
-import express from 'express';
-import createRoutes from './routes.js';
+const express = require('express');
+const createRoutes = require('./src/routes.js');
 
 const app = express();
 const port = 3000;
