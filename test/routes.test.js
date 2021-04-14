@@ -1,4 +1,5 @@
 const express = require('express');
+const retrieveDailyPhoto = require('../src/retrieveDailyPhoto.js');
 const createRoutes = require('../src/routes.js');
 
 jest.mock('express');
@@ -32,7 +33,7 @@ describe('index.js', () => {
         expect(routeHandler).toEqual(fakeRouter);
     })
 
-    it('should add expected daily photo get request handler', () => {
+    it('should add expected daily photo get request handler with retrieveDailyPhoto middleware', () => {
         const fakeRouter = {
             get: jest.fn()
         };
@@ -43,6 +44,6 @@ describe('index.js', () => {
 
         createRoutes();
 
-        expect(fakeRouter.get).toHaveBeenCalledWith("/dailyPhoto", expect.any(Function));
+        expect(fakeRouter.get).toHaveBeenCalledWith("/dailyPhoto", retrieveDailyPhoto);
     })
 })

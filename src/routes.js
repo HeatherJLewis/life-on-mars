@@ -1,9 +1,10 @@
 const { Router } = require('express');
+const retrieveDailyPhoto = require('./retrieveDailyPhoto');
 
 const createRoutes = () => {
     const router = Router();
 
-    router.get("/dailyPhoto", () => {});
+    router.get("/dailyPhoto", retrieveDailyPhoto);
 
     return router;
 };
