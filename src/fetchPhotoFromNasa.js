@@ -2,9 +2,9 @@ const got = require('got');
 
 async function fetchPhotoFromNasa() {
     const apiKey = process.env.NASA_API_KEY;
-    const response = await got('https://api.nasa.gov/planetary/apod', {searchParams: {api_key: apiKey}});
-
-    const { url } = await response.json();
+    const options = {searchParams: {api_key: apiKey}, responseType: 'json'};
+    const { body } = await got('https://api.nasa.gov/planetary/apod', options);
+    const { url } = body;
 
     return {
         url,
