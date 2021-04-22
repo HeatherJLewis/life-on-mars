@@ -15,10 +15,12 @@ describe('fetchPhotoFromNasa', () => {
     it('should return the expected format', async () => {
         const fakeUrl = "https://www.nasa.gov/image2.jpg";
         const fakeNASAResponse = {
-            url: fakeUrl,
+            body: {
+                url: fakeUrl,
+            }
         };
 
-        got.mockResolvedValue({json: () => Promise.resolve(fakeNASAResponse)})
+        got.mockResolvedValue(fakeNASAResponse)
 
         const data = await fetchPhotoFromNasa();
 
@@ -29,46 +31,45 @@ describe('fetchPhotoFromNasa', () => {
         const fakeUrl = "https://www.nasa.gov/image2.jpg";
         const fakeAPIKey = 'fakeAPIKey';
         const fakeNASAResponse = {
-            url: fakeUrl,
+            body: {
+                url: fakeUrl,
+            }
         };
-        const expectedSearchParams = {searchParams: {api_key: fakeAPIKey}};
+        const expectedSearchParams = {searchParams: {api_key: fakeAPIKey}, responseType: 'json'};
         process.env.NASA_API_KEY = fakeAPIKey;
 
-        got.mockResolvedValue({json: () => Promise.resolve(fakeNASAResponse)});
+        got.mockResolvedValue(fakeNASAResponse);
 
         await fetchPhotoFromNasa();
 
         expect(got).toHaveBeenCalledWith(expect.any(String), expectedSearchParams);
     });
 
-    it('should call got with the expected API Key and URL', async () => {
+    it('should call got with the expected URL', async () => {
         const fakeUrl = "https://www.nasa.gov/image2.jpg";
-        const fakeAPIKey = 'someAPIKey';
         const apodEndpoint = 'https://api.nasa.gov/planetary/apod';
-        const expectedSearchParams = {searchParams: {api_key: fakeAPIKey}};
         const fakeNASAResponse = {
-            url: fakeUrl,
+            body: {
+                url: fakeUrl,
+            }
         };
-        process.env.NASA_API_KEY = fakeAPIKey;
 
-        got.mockResolvedValue({json: () => Promise.resolve(fakeNASAResponse)})
+        got.mockResolvedValue(fakeNASAResponse)
 
         await fetchPhotoFromNasa();
 
-        expect(got).toHaveBeenCalledWith(apodEndpoint, expectedSearchParams)
+        expect(got).toHaveBeenCalledWith(apodEndpoint, expect.any(Object))
     })
 
     it('should return expected data from NASA APOD API', async() => {
-        const fakeAPIKey = 'someAPIKey';
-
         const fakeUrl = "https://www.nasa.gov/image2.jpg";
         const fakeNASAResponse = {
-            url: fakeUrl,
+            body: {
+                url: fakeUrl,
+            }
         };
-        process.env.NASA_API_KEY = fakeAPIKey;
 
-
-        got.mockResolvedValue({json: () => Promise.resolve(fakeNASAResponse)})
+        got.mockResolvedValue(fakeNASAResponse)
 
         const data = await fetchPhotoFromNasa();
 
