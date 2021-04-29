@@ -1,11 +1,9 @@
-const express = require('express');
-const createRoutes = require('./src/routes.js');
+const { createServer } = require('./createServer.js')
 
-const app = express();
-const port = 3000;
+const PORT = 3000;
 
-app.use(createRoutes());
+const server = createServer();
 
-app.listen(port, () => {
-  console.log(`App listening at http://localhost:${port}`);
+server.listen(PORT, () => {
+  console.log(`App listening at http://localhost:${PORT}`);
 });
