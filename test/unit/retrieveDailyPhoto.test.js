@@ -1,7 +1,7 @@
-const retrieveDailyPhoto = require('../src/retrieveDailyPhoto');
-const fetchPhotoFromNasa = require('../src/fetchPhotoFromNasa');
+const retrieveDailyPhoto = require('../../src/retrieveDailyPhoto');
+const fetchPhotoFromNasa = require('../../src/fetchPhotoFromNasa');
 
-jest.mock('../src/fetchPhotoFromNasa');
+jest.mock('../../src/fetchPhotoFromNasa');
 
 describe('Middleware - retrieveDailyPhoto', () => {
     it('should respond with JSON', async () => {

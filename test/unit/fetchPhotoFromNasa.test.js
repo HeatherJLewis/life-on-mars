@@ -1,4 +1,4 @@
-const fetchPhotoFromNasa = require("../src/fetchPhotoFromNasa");
+const fetchPhotoFromNasa = require("../../src/fetchPhotoFromNasa");
 const got = require("got");
 
 jest.mock('got');

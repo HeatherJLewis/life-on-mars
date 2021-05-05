@@ -1,6 +1,6 @@
 const express = require('express');
-const retrieveDailyPhoto = require('../src/retrieveDailyPhoto.js');
-const createRoutes = require('../src/routes.js');
+const retrieveDailyPhoto = require('../../src/retrieveDailyPhoto.js');
+const createRoutes = require('../../src/routes.js');
 
 jest.mock('express');
 
