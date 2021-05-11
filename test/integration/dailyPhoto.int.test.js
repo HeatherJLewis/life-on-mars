@@ -16,25 +16,44 @@ describe('GET /dailyPhoto', () => {
         nock.enableNetConnect('127.0.0.1');
     });
 
-    beforeEach(() => {
-        process.env.NASA_API_KEY = 'fakeApiKey'
+    describe('when the request to the NASA API is successful', () => {
+        beforeEach(() => {
+            process.env.NASA_API_KEY = 'fakeApiKey'
 
-        nock('https://api.nasa.gov')
-            .get('/planetary/apod')
-            .query({ api_key: 'fakeApiKey' })
-            .reply(200, response);
+            nock('https://api.nasa.gov')
+                .get('/planetary/apod')
+                .query({ api_key: 'fakeApiKey' })
+                .reply(200, response);
+        });
+
+        it('should return a 200 status code', async () => {
+            const response = await request.get('/dailyPhoto');
+
+            expect(response.status).toEqual(200);
+        });
+
+        it('should return the expected URL', async () => {
+            const response = await request.get('/dailyPhoto');
+            const { url } = response.body;
+
+            expect(url).toEqual(expectedUrl);
+        });
     });
 
-    it('should return a 200 status code', async () => {
-        const response = await request.get('/dailyPhoto');
+    describe('when the request to the NASA API is unsuccessful', () => {
+        beforeEach(() => {
+            process.env.NASA_API_KEY = 'fakeApiKey'
 
-        expect(response.status).toEqual(200);
-    });
+            nock('https://api.nasa.gov')
+                .get('/planetary/apod')
+                .query({ api_key: 'fakeApiKey' })
+                .reply(500, response);
+        });
 
-    it('should return the expected URL', async () => {
-        const response = await request.get('/dailyPhoto');
-        const { url } = response.body;
+        it('should return a 500 status code', async () => {
+            const response = await request.get('/dailyPhoto');
 
-        expect(url).toEqual(expectedUrl);
+            expect(response.status).toEqual(500);
+        });
     });
 });
