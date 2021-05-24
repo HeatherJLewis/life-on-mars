@@ -1,7 +1,7 @@
-const retrieveDailyPhoto = require('../src/retrieveDailyPhoto');
-const fetchPhotoFromNasa = require('../src/fetchPhotoFromNasa');
+const retrieveDailyPhoto = require('../../src/retrieveDailyPhoto');
+const fetchPhotoFromNasa = require('../../src/fetchPhotoFromNasa');
 
-jest.mock('../src/fetchPhotoFromNasa');
+jest.mock('../../src/fetchPhotoFromNasa');
 
 describe('Middleware - retrieveDailyPhoto', () => {
     it('should respond with JSON', async () => {
@@ -51,7 +51,6 @@ describe('Middleware - retrieveDailyPhoto', () => {
         const fakeResponse = {
             json: jest.fn()
         }
-        
         const expectedData = {
             url: "https://www.nasa.gov/image.jpg"
         }
@@ -66,15 +65,16 @@ describe('Middleware - retrieveDailyPhoto', () => {
     it('should respond with an error', async () => {
         const fakeRequest = {};
         const fakeResponse = {
+            status: jest.fn().mockReturnThis(),
             json: jest.fn()
         }
-        
+
         const givenError = new Error('no photo for you today');
 
         const expectedErrorData = {
             error: givenError.message
         }
-    
+
         fetchPhotoFromNasa.mockRejectedValue(givenError);
 
         await retrieveDailyPhoto(fakeRequest, fakeResponse);
