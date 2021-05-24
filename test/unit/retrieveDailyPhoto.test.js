@@ -38,8 +38,7 @@ describe('Middleware - retrieveDailyPhoto', () => {
     it('should call fetchPhotoFromNasa', async () => {
         const fakeRequest = {};
         const fakeResponse = {
-            json: jest.fn(),
-            status: jest.fn()
+            json: jest.fn()
         }
 
         await retrieveDailyPhoto(fakeRequest, fakeResponse);
@@ -65,9 +64,9 @@ describe('Middleware - retrieveDailyPhoto', () => {
 
     it('should respond with an error', async () => {
         const fakeRequest = {};
-        const fakeJson = jest.fn();
         const fakeResponse = {
-            status: jest.fn().mockReturnValue({ json: fakeJson })
+            status: jest.fn().mockReturnThis(),
+            json: jest.fn()
         }
 
         const givenError = new Error('no photo for you today');
@@ -80,6 +79,6 @@ describe('Middleware - retrieveDailyPhoto', () => {
 
         await retrieveDailyPhoto(fakeRequest, fakeResponse);
 
-        expect(fakeJson).toHaveBeenCalledWith(expectedErrorData);
+        expect(fakeResponse.json).toHaveBeenCalledWith(expectedErrorData);
     });
 });
