@@ -1,6 +1,5 @@
-const { createServer } = require('./createServer.js')
-
-const PORT = 3000;
+const { createServer } = require("./createServer.js");
+const { PORT } = require("./config/environmentVariables.js");
 
 const server = createServer();
 
