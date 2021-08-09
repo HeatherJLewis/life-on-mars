@@ -1,31 +1,32 @@
 describe("environment variables", () => {
   let dotenv;
-  let myNumber = 0;
+  let originalProcessEnv;
 
   beforeEach(() => {
-    dotenv = require("dotenv"); // get it once - mockNo1
-    dotenv.version = myNumber++;
+    dotenv = require("dotenv");
     jest.mock("dotenv");
+    originalProcessEnv = process.env;
   });
 
   afterEach(() => {
-    jest.resetModules(); // reset environmentVariables
-    // jest.resetAllMocks(); // reset dotenv mockNo1
+    jest.resetModules();
+    process.env = originalProcessEnv;
   });
 
-  //mockNo1
   it("should export an object with a property of PORT", () => {
-    // still have mockNo1
-    dotenv.config.mockReturnValue({}); // mockNo1 return object
-    console.log("In Test 1", dotenv.version);
-    const exportValue = require("../../../config/environmentVariables"); // fresh environmentVariable which brings in fresh dotenv (mockNo2)
+    dotenv.config.mockReturnValue({});
+    process.env = {
+      PORT: "somePort",
+      NASA_API_KEY: "someApiKey",
+    };
 
-    expect(exportValue).toHaveProperty("PORT");
+    const exportValue = require("../../../config/environmentVariables");
+
+    expect(exportValue).toMatchSnapshot();
   });
 
   it("should call config", () => {
-    dotenv.config.mockReturnValue({}); // tell mockNo1 at the top to return an object
-    console.log("In Test 2", dotenv.version);
+    dotenv.config.mockReturnValue({});
     require("../../../config/environmentVariables");
 
     expect(dotenv.config).toHaveBeenCalled();
@@ -35,16 +36,9 @@ describe("environment variables", () => {
     dotenv.config.mockReturnValue({
       error: new Error(),
     });
-    console.log("In Test 3", dotenv.version);
 
     expect(() => {
       require("../../../config/environmentVariables");
     }).toThrowError();
   });
-
-  // it("should set a value to the PORT property", () => {
-  //   const fakePort = 1234;
-
-  //   expect(exportValue.PORT).toBe(fakePort);
-  // });
 });
