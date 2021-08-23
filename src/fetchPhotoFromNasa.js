@@ -1,8 +1,8 @@
 const got = require("got");
-const { NASA_API_KEY } = require("../config/environmentVariables.js");
+const { generateEnvironmentVariables } = require("../config/environmentVariables.js");
 
 async function fetchPhotoFromNasa() {
-  console.log(NASA_API_KEY);
+  const { NASA_API_KEY } = generateEnvironmentVariables();
   const options = {
     searchParams: { api_key: NASA_API_KEY },
     responseType: "json",

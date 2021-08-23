@@ -1,8 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`environment variables should export an object with a property of PORT 1`] = `
-Object {
-  "NASA_API_KEY": "someApiKey",
-  "PORT": "somePort",
-}
-`;

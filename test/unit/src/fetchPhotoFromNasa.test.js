@@ -1,15 +1,19 @@
 const fetchPhotoFromNasa = require("../../../src/fetchPhotoFromNasa");
 const got = require("got");
+const { generateEnvironmentVariables } = require("../../../config/environmentVariables");
 
 jest.mock("got");
+jest.mock("../../../config/environmentVariables");
 
 describe("fetchPhotoFromNasa", () => {
+  const fakeAPIKey = "fakeAPIKey";
+
   beforeEach(() => {
     got.mockReset();
-  });
 
-  afterEach(() => {
-    delete process.env.NASA_API_KEY;
+    generateEnvironmentVariables.mockReturnValue({
+      NASA_API_KEY: fakeAPIKey
+    })
   });
 
   it("should return the expected format", async () => {
@@ -29,23 +33,21 @@ describe("fetchPhotoFromNasa", () => {
 
   it("should call got with the expected API key", async () => {
     const fakeUrl = "https://www.nasa.gov/image2.jpg";
-    const fakeAPIKey = "fakeAPIKey";
     const fakeNASAResponse = {
       body: {
         url: fakeUrl,
       },
     };
-    const expectedSearchParams = {
+    const expectedOptions = {
       searchParams: { api_key: fakeAPIKey },
       responseType: "json",
     };
-    process.env.NASA_API_KEY = fakeAPIKey;
 
     got.mockResolvedValue(fakeNASAResponse);
 
     await fetchPhotoFromNasa();
 
-    expect(got).toHaveBeenCalledWith(expect.any(String), expectedSearchParams);
+    expect(got).toHaveBeenCalledWith(expect.any(String), expectedOptions);
   });
 
   it("should call got with the expected URL", async () => {

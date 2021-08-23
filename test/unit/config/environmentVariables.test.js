@@ -1,44 +1,24 @@
-describe("environment variables", () => {
-  let dotenv;
-  let originalProcessEnv;
+const { generateEnvironmentVariables } = require("../../../config/environmentVariables");
 
-  beforeEach(() => {
-    dotenv = require("dotenv");
-    jest.mock("dotenv");
-    originalProcessEnv = process.env;
-  });
+describe('generateEnvironmentVariables', () => {
+    let originalProcessEnv;
 
-  afterEach(() => {
-    jest.resetModules();
-    process.env = originalProcessEnv;
-  });
-
-  it("should export an object with a property of PORT", () => {
-    dotenv.config.mockReturnValue({});
-    process.env = {
-      PORT: "somePort",
-      NASA_API_KEY: "someApiKey",
-    };
-
-    const exportValue = require("../../../config/environmentVariables");
-
-    expect(exportValue).toMatchSnapshot();
-  });
-
-  it("should call config", () => {
-    dotenv.config.mockReturnValue({});
-    require("../../../config/environmentVariables");
-
-    expect(dotenv.config).toHaveBeenCalled();
-  });
-
-  it("should throw an error if .config returns an error", () => {
-    dotenv.config.mockReturnValue({
-      error: new Error(),
+    beforeEach(() => {
+        originalProcessEnv = process.env;
     });
 
-    expect(() => {
-      require("../../../config/environmentVariables");
-    }).toThrowError();
-  });
+    afterEach(() => {
+        process.env = originalProcessEnv;
+    });
+
+    it('should return expected environment variable values', () => {
+        const expectedEnvironmentVariables = {
+            PORT: "somePort",
+            NASA_API_KEY: "someApiKey",
+        };
+
+        process.env = { ...expectedEnvironmentVariables, OTHER_VALUE: 'betty' };
+
+        expect(generateEnvironmentVariables()).toEqual(expectedEnvironmentVariables);
+    });
 });
